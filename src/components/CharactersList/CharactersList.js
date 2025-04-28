@@ -2,12 +2,14 @@ import { useContext, useRef, useState } from "react";
 import {  HeroesContext  } from "../../DataCharacters";
 import styled from 'styled-components';
 import { FilterList } from "../Filter/FilterList";
+import { ModalWindow } from "../ModalWindow/ModalWindow";
 
 export function CharactersList (){
     const heroes = useContext(HeroesContext)
     const [valueName, setValueName] = useState('')
     const [valueRace, setValueRace] = useState('')
     const [valueGender, setValueGender] = useState('')
+    const [statusWindow, setStatusWindow] = useState(false)
     const inputName = useRef(null)
     const inputRace = useRef(null)
   
@@ -34,8 +36,12 @@ export function CharactersList (){
   })
 
 
+const windowOpenClick = () =>{
+   setStatusWindow(true)
 
-  console.log(heroes)
+}
+
+  console.log(statusWindow)
  
 
    
@@ -43,11 +49,12 @@ export function CharactersList (){
    
 return(
     <>
+    <ModalWindow statusWindow ={statusWindow} setStatusWindow={setStatusWindow}/>
        <FilterList  inputName={inputName} inputRace={inputRace} handleChange={handleChange}  />
     <ListContainer >
 {filteredHeroes.map((item, id) => {
  return (
-    <CharactersContainer key={id}>
+    <CharactersContainer key={id} onClick={windowOpenClick}>
  <ImageHero  src={item.images.md}></ImageHero>
  <div>Name: {item.name}</div>
  <div>Gender: {(item.appearance.gender == '-' ? 'Unknown' :  item.appearance.gender)}</div>
@@ -56,6 +63,7 @@ return(
  )
 })}
 </ListContainer>
+
     </>
 )
 }
@@ -79,6 +87,7 @@ font-size: 20px;
 border-radius: 3%;
 background: black;
 background-color: black;
+cursor: pointer;
 padding: 5px 2px 120px 2px;
 > * {
 padding: 4px 0px 0px 4px;
