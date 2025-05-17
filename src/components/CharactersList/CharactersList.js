@@ -10,6 +10,7 @@ export function CharactersList (){
     const [valueRace, setValueRace] = useState('')
     const [valueGender, setValueGender] = useState('')
     const [statusWindow, setStatusWindow] = useState(false)
+    const [heroeInfo, setHeroeInfo] = useState([])
     const inputName = useRef(null)
     const inputRace = useRef(null)
   
@@ -36,25 +37,23 @@ export function CharactersList (){
   })
 
 
-const windowOpenClick = () =>{
+const windowOpenClick = (item) =>{
    setStatusWindow(true)
-
+   setHeroeInfo([item])
 }
 
-  console.log(statusWindow)
- 
 
-   
-
+//console.log( heroes)
    
 return(
     <>
-    <ModalWindow statusWindow ={statusWindow} setStatusWindow={setStatusWindow}/>
+    <ModalWindow statusWindow ={statusWindow} heroeInfo={heroeInfo} setStatusWindow={setStatusWindow}/>
        <FilterList  inputName={inputName} inputRace={inputRace} handleChange={handleChange}  />
     <ListContainer >
 {filteredHeroes.map((item, id) => {
+
  return (
-    <CharactersContainer key={id} onClick={windowOpenClick}>
+    <CharactersContainer key={id} onClick={() => {windowOpenClick(item)}}>
  <ImageHero  src={item.images.md}></ImageHero>
  <div>Name: {item.name}</div>
  <div>Gender: {(item.appearance.gender == '-' ? 'Unknown' :  item.appearance.gender)}</div>
